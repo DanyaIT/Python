@@ -28,18 +28,19 @@ class Matrix:
         self.my_list = my_list
 
     def __str__(self):
-        print('\n'.join(list(map(str, self))))
+        print('\n'.join(list(map(str, self.my_list))))
 
     def __add__(self, other):
         self.other = other
         for i in range(len(self.my_list)):
-            for j in range(len(self.my_list[i])):
-                other[i][j] = other[i][j] + self.my_list[i][j]
-        return Matrix.__str__(other)
+            for j in range(len(other.my_list[i])):
+                self.my_list[i][j] = self.my_list[i][j] + other.my_list[i][j]
+        return Matrix.__str__(self)
 
 
-matrix = Matrix([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]])
-matrix.__add__([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]])
+matrix_1 = Matrix([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]])
+matrix_2 = Matrix([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]])
+matrix_1.__add__(matrix_2)
 
 
 # Задание 2
@@ -96,18 +97,23 @@ print(ceil_1.make_order(5))
 # Проверьте его работу на данных, вводимых пользователем. При вводе пользователем нуля
 # в качестве делителя программа должна корректно обработать эту ситуацию и не завершиться с ошибкой.
 
-class Zero:
-    def __init__(self, divisible, divider):
-        self.divisible = divisible
-        self.divider = divider
+class Zero(Exception):
+    def __init__(self, text):
+        self.text = text
 
-    def share_on_zero(self):
+    @staticmethod
+    def share_on_zero():
         try:
-            return round(self.divisible / self.divider)
-        except:
-            return 'Вы еще не освоили выш. мат.!'
+            divisible = int(input('Введите числитель дроби: '))
+            divider = int(input('Введите знаменатель дроби: '))
+            if divider == 0:
+                raise Zero('Вы еще не освоили выш. мат.!')
+        except ValueError:
+            return 'Укажите числовое значение!'
+        except Zero as err:
+            print(err)
+        else:
+            print(f'Ответ: {divisible / divider}')
 
 
-zero = Zero(15, 5)
-print(zero.share_on_zero())
-print(Zero(100, 0).share_on_zero())
+Zero.share_on_zero()
