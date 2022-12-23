@@ -28,19 +28,22 @@ class Matrix:
         self.my_list = my_list
 
     def __str__(self):
-        print('\n'.join(list(map(str, self.my_list))))
+        ans = '\n'.join(map(str, self.my_list))
+        ans = ans.replace(',', '').replace(']', '').replace('[', '')
+        return ans
 
     def __add__(self, other):
         self.other = other
         for i in range(len(self.my_list)):
             for j in range(len(other.my_list[i])):
                 self.my_list[i][j] = self.my_list[i][j] + other.my_list[i][j]
-        return Matrix.__str__(self)
+        return Matrix(self.my_list)
 
 
 matrix_1 = Matrix([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]])
 matrix_2 = Matrix([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]])
-matrix_1.__add__(matrix_2)
+
+print(matrix_1 + matrix_2)
 
 
 # Задание 2
@@ -101,19 +104,19 @@ class Zero(Exception):
     def __init__(self, text):
         self.text = text
 
-    @staticmethod
-    def share_on_zero():
-        try:
-            divisible = int(input('Введите числитель дроби: '))
-            divider = int(input('Введите знаменатель дроби: '))
-            if divider == 0:
-                raise Zero('Вы еще не освоили выш. мат.!')
-        except ValueError:
-            return 'Укажите числовое значение!'
-        except Zero as err:
-            print(err)
-        else:
-            print(f'Ответ: {divisible / divider}')
+
+def share_on_zero():
+    try:
+        divisible = int(input('Введите числитель дроби: '))
+        divider = int(input('Введите знаменатель дроби: '))
+        if divider == 0:
+            raise Zero('Вы еще не освоили выш. мат.!')
+    except ValueError:
+        return 'Укажите числовое значение!'
+    except Zero as err:
+        print(err)
+    else:
+        print(f'Ответ: {divisible / divider}')
 
 
-Zero.share_on_zero()
+share_on_zero()
